@@ -36,23 +36,7 @@ test('sets defaults for flags', () => {
   run('help thing', { commands: { help } })
 })
 
-test('prints out data', () => {
-  const whatever = command({
-    name: 'whatever',
-    *handler () {
-      yield print('This is a test')
-    }
-  })
-
-  const printSpy = command => expect(command.value).toEqual('This is a test')
-
-  run('whatever', {
-    commands: { whatever },
-    processors: { 'PRINT': printSpy }
-  })
-})
-
-test('asks questions', () => {
+test('supports yielding to commands which pass input back in', () => {
   const login = command({
     name: 'login',
     *handler () {
@@ -61,6 +45,8 @@ test('asks questions', () => {
 
       expect(username).toEqual('tester')
       expect(password).toEqual('monkey')
+
+      yield print('Login successful')
     }
   })
 
@@ -69,9 +55,13 @@ test('asks questions', () => {
     if (command.question === 'What is your password?') return 'monkey'
   }
 
+  const printSpy = function (command) {
+    expect(command.value).toEqual('Login successful')
+  }
+
   run('login', {
     commands: { login },
-    processors: { 'ASK': askSpy }
+    processors: { 'ASK': askSpy, 'PRINT': printSpy }
   })
 })
 
