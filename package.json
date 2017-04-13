@@ -1,0 +1,15 @@
+{
+  "name": "pretty-cli",
+  "description": "Build declarative CLIs",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-jest": "^19.0.1",
+    "jest": "^19.0.2"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
+}

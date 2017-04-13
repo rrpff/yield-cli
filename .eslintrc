@@ -1,0 +1,16 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error"
+  },
+  "plugins": ["jest"],
+  "extends": ["eslint:recommended"]
+}
