@@ -1,8 +1,6 @@
-const { run, command, print, ask, hidden } = require('../')
+const { run, command, print, ask } = require('../')
 
 test('reads options', () => {
-  expect.assertions(1)
-
   const help = command({
     name: 'help',
     flags: { verbose: false },
@@ -15,8 +13,6 @@ test('reads options', () => {
 })
 
 test('reads flags', () => {
-  expect.assertions(1)
-
   const help = command({
     name: 'help',
     flags: { verbose: false },
@@ -29,8 +25,6 @@ test('reads flags', () => {
 })
 
 test('sets defaults for flags', () => {
-  expect.assertions(1)
-
   const help = command({
     name: 'help',
     flags: { verbose: false },
@@ -43,8 +37,6 @@ test('sets defaults for flags', () => {
 })
 
 test('prints out data', () => {
-  expect.assertions(1)
-
   const whatever = command({
     name: 'whatever',
     *handler () {
@@ -60,23 +52,29 @@ test('prints out data', () => {
   })
 })
 
-// test('asks questions', () => {
-//   expect.assertions(2)
-//
-//   const login = command({
-//     name: 'login',
-//     *handler () {
-//       const username = yield ask('What is your username?')
-//       const password = yield hidden('What is your password?')
-//
-//       expect(username).toEqual('tester')
-//       expect(password).toEqual('monkey')
-//     }
-//   })
-//
-//   run('login', { commands: { login } })
-// })
+test('asks questions', () => {
+  const login = command({
+    name: 'login',
+    *handler () {
+      const username = yield ask('What is your username?')
+      const password = yield ask('What is your password?', { hidden: true })
+
+      expect(username).toEqual('tester')
+      expect(password).toEqual('monkey')
+    }
+  })
+
+  const askSpy = function (command) {
+    if (command.question === 'What is your username?') return 'tester'
+    if (command.question === 'What is your password?') return 'monkey'
+  }
+
+  run('login', {
+    commands: { login },
+    processors: { 'ASK': askSpy }
+  })
+})
 
 test('fails when the command does not exist', () => {
-  expect(run.bind(run, 'whatever')).toThrow('Error: "whatever" is not a command.')
+  expect(run.bind(run, 'whatever')).toThrow('"whatever" is not a command.')
 })

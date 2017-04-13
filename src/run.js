@@ -1,6 +1,6 @@
 const parseArgs = require('minimist')
 
-const COMMAND_NOT_FOUND_ERROR = command => `Error: "${command}" is not a command.`
+const COMMAND_NOT_FOUND_ERROR = command => `"${command}" is not a command.`
 
 function run (commandText, { commands = {}, processors = {} } = {}) {
   const chunks = commandText.split(' ')
