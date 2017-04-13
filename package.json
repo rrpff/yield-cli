@@ -1,5 +1,5 @@
 {
-  "name": "pretty-cli",
+  "name": "yield-cli",
   "description": "Build declarative CLIs",
   "scripts": {
     "test": "jest"
